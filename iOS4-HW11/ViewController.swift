@@ -11,6 +11,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var button: UIButton!
     @IBOutlet weak var timerLabel: UILabel!
+    @IBOutlet weak var pauseButton: UIButton!
     
     let circularProgress = CircularProgress(frame: CGRect(x: 10.0, y: 30.0, width: 100.0, height: 100.0))
     var timer: Timer?
@@ -57,7 +58,7 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func buttonPressed(_ sender: Any) {
+    @IBAction func playButtonPressed(_ sender: Any) {
             
 //                circularProgress.trackColor = UIColor.yellow
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
@@ -70,6 +71,8 @@ class ViewController: UIViewController {
         
     }
     
+    @IBAction func pauseButtonPressed(_ sender: Any) {
+    }
     
 }
 
