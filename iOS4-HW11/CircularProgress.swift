@@ -43,6 +43,8 @@ class CircularProgress: UIView {
         }
     }
     
+    
+    
     fileprivate func createCircularPath() {
         self.backgroundColor = UIColor.clear
         self.layer.cornerRadius = self.frame.size.width/2.0
@@ -66,6 +68,8 @@ class CircularProgress: UIView {
         progressCircle.lineWidth = 3.0;
         progressCircle.strokeEnd = 1.0
         layer.addSublayer(progressCircle)
+        
+        
     }
     
     func setProgressWithAnimation(duration: TimeInterval) {
@@ -81,10 +85,11 @@ class CircularProgress: UIView {
         orbit.path = circlePath.cgPath
         orbit.duration = duration
         orbit.isAdditive = true
-        orbit.repeatCount = 3
+        orbit.repeatCount = 1
         orbit.calculationMode = CAAnimationCalculationMode.cubic
         orbit.rotationMode = CAAnimationRotationMode.rotateAuto
         progressCircle.add(orbit, forKey: "orbit")
+        
         
     }
     
