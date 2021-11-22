@@ -43,7 +43,20 @@ class CircularProgress: UIView {
         }
     }
     
-    
+    fileprivate func pauseLayer(layer: CALayer) {
+        let pausedTime = layer.convertTime(CACurrentMediaTime(), from: nil)
+        layer.speed = 0.0
+        layer.timeOffset = pausedTime
+    }
+
+    fileprivate func resumeLayer(layer: CALayer) {
+        let pausedTime = layer.timeOffset
+        layer.speed = 1.0
+        layer.timeOffset = 0.0
+        layer.beginTime = 0.0
+        let timeSincePause = layer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
+        layer.beginTime = timeSincePause
+    }
     
     fileprivate func createCircularPath() {
         self.backgroundColor = UIColor.clear
@@ -85,12 +98,19 @@ class CircularProgress: UIView {
         orbit.path = circlePath.cgPath
         orbit.duration = duration
         orbit.isAdditive = true
-        orbit.repeatCount = 1
+//        orbit.repeatCount = 1
+        orbit.speed = 100.0
         orbit.calculationMode = CAAnimationCalculationMode.cubic
         orbit.rotationMode = CAAnimationRotationMode.rotateAuto
         progressCircle.add(orbit, forKey: "orbit")
         
-        
+    }
+    func pauseProgress () {
+        pauseLayer(layer: progressCircle)
+    }
+    
+    func resumeProgress () {
+        resumeLayer(layer: progressCircle)
     }
     
 }

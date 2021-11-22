@@ -28,7 +28,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <buttonConfiguration key="configuration" style="plain" title=""/>
                                 <connections>
-                                    <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="b8C-cw-7ED"/>
+                                    <action selector="playButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9vd-b6-ACE"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eew-rh-8xS" userLabel="PauseButton">
@@ -40,17 +40,6 @@
                                     <action selector="pauseButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vTE-6J-XVO"/>
                                 </connections>
                             </button>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ddI-rZ-EsV">
-                                <rect key="frame" x="130" y="256" width="131" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <segments>
-                                    <segment title="Work"/>
-                                    <segment title="Rest"/>
-                                </segments>
-                                <connections>
-                                    <action selector="segmentControlAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="hE6-bW-gWz"/>
-                                </connections>
-                            </segmentedControl>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M8O-l3-2JZ" userLabel="ResetButton">
                                 <rect key="frame" x="160" y="549" width="71" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -65,9 +54,8 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <connections>
-                        <outlet property="button" destination="rzl-dJ-IK3" id="gRg-iO-ajE"/>
                         <outlet property="pauseButton" destination="eew-rh-8xS" id="Iu8-pO-Pf5"/>
-                        <outlet property="segmentControl" destination="ddI-rZ-EsV" id="Hey-RJ-uvi"/>
+                        <outlet property="playButton" destination="rzl-dJ-IK3" id="QqD-AN-wYY"/>
                         <outlet property="timerLabel" destination="pNC-45-B8h" id="4CX-NG-m9A"/>
                     </connections>
                 </viewController>
