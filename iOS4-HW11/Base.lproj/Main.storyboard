@@ -47,12 +47,18 @@
                                     <segment title="Work"/>
                                     <segment title="Rest"/>
                                 </segments>
+                                <connections>
+                                    <action selector="segmentControlAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="hE6-bW-gWz"/>
+                                </connections>
                             </segmentedControl>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M8O-l3-2JZ" userLabel="ResetButton">
                                 <rect key="frame" x="160" y="549" width="71" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="gray" title="Reset" buttonSize="small"/>
+                                <connections>
+                                    <action selector="resetButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LMI-mZ-6W9"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -61,6 +67,7 @@
                     <connections>
                         <outlet property="button" destination="rzl-dJ-IK3" id="gRg-iO-ajE"/>
                         <outlet property="pauseButton" destination="eew-rh-8xS" id="Iu8-pO-Pf5"/>
+                        <outlet property="segmentControl" destination="ddI-rZ-EsV" id="Hey-RJ-uvi"/>
                         <outlet property="timerLabel" destination="pNC-45-B8h" id="4CX-NG-m9A"/>
                     </connections>
                 </viewController>

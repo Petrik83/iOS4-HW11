@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var button: UIButton!
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var pauseButton: UIButton!
+    @IBOutlet weak var segmentControl: UISegmentedControl!
     
     let circularProgress = CircularProgress(frame: CGRect(x: 10.0, y: 30.0, width: 100.0, height: 100.0))
     var timer: Timer?
@@ -74,5 +75,9 @@ class ViewController: UIViewController {
     @IBAction func pauseButtonPressed(_ sender: Any) {
     }
     
+    @IBAction func segmentControlAction(_ sender: Any) {
+    }
+    @IBAction func resetButtonPressed(_ sender: Any) {
+    }
 }
 
