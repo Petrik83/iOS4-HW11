@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     
     let circularProgress = CircularProgress(frame: CGRect(x: 10.0, y: 30.0, width: 100.0, height: 100.0))
     var timer: Timer?
-    var timeLeft = 2500
+    var timeLeft = 0
     var isWorkTime = true
     var sceneColor = UIColor.brown
     
@@ -30,23 +30,18 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        timeLeft = 2500
+        isWorkTime = true
+        sceneColor = UIColor.brown
         changeSceneColor(color: sceneColor)
-//        circularProgress.trackColor = sceneColor
         circularProgress.tag = 101
         circularProgress.center = self.view.center
         self.view.addSubview(circularProgress)
         pauseButton.isHidden = true
         playButton.isHidden = false
         playButton.setImage(UIImage(systemName: "play", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40)), for: .normal)
-//        playButton.tintColor = sceneColor
-        
         pauseButton.setImage(UIImage(systemName: "pause", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40)), for: .normal)
-//        pauseButton.tintColor = sceneColor
-        
-//        timerLabel.textColor = sceneColor
         timerLabel.text = "\(timeConverter(time: timeLeft))"
-        
-        
     }
 
     @objc func animateProgress() {
@@ -62,6 +57,11 @@ class ViewController: UIViewController {
     @objc func resumeAnimateProgress() {
            let cp = self.view.viewWithTag(101) as! CircularProgress
            cp.resumeProgress()
+       }
+    
+    @objc func removeAnimateProgress() {
+           let cp = self.view.viewWithTag(101) as! CircularProgress
+           cp.removeProgress()
        }
     
     override func didReceiveMemoryWarning() {
@@ -94,7 +94,6 @@ class ViewController: UIViewController {
 
     @IBAction func playButtonPressed(_ sender: Any) {
         timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
-                //animate progress
         switch timeLeft {
         case 500, 2500, 150000, 30000:
             self.perform(#selector(animateProgress), with: nil, afterDelay: 0)
@@ -114,7 +113,10 @@ class ViewController: UIViewController {
     }
     
     @IBAction func resetButtonPressed(_ sender: Any) {
-        
+        timer?.invalidate()
+        resumeAnimateProgress()
+        removeAnimateProgress()
+        viewDidLoad()
     }
 }
 

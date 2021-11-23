@@ -58,6 +58,10 @@ class CircularProgress: UIView {
         layer.beginTime = timeSincePause
     }
     
+    fileprivate func removeLayer(layer: CALayer) {
+        layer.removeAllAnimations()
+    }
+    
     fileprivate func createCircularPath() {
         self.backgroundColor = UIColor.clear
         self.layer.cornerRadius = self.frame.size.width/2.0
@@ -87,8 +91,8 @@ class CircularProgress: UIView {
     
     func setProgressWithAnimation(duration: TimeInterval) {
         let circlePath = UIBezierPath(arcCenter: CGPoint(x: frame.size.width / 2.0, y: frame.size.height / 2.0),
-                                      radius: CGFloat(35), startAngle: CGFloat(-0.67 * Double.pi),
-                                      endAngle: CGFloat(1.33 * Double.pi), clockwise: true)
+                                      radius: CGFloat(37), startAngle: CGFloat(-0.66 * Double.pi),
+                                      endAngle: CGFloat(1.34 * Double.pi), clockwise: true)
         
         let orbit = CAKeyframeAnimation(keyPath: "position")
         var affineTransform = CGAffineTransform(rotationAngle: 0.0)
@@ -98,11 +102,12 @@ class CircularProgress: UIView {
         orbit.path = circlePath.cgPath
         orbit.duration = duration
         orbit.isAdditive = true
-//        orbit.repeatCount = 1
+        orbit.repeatCount = 1
         orbit.speed = 100.0
         orbit.calculationMode = CAAnimationCalculationMode.cubic
         orbit.rotationMode = CAAnimationRotationMode.rotateAuto
         progressCircle.add(orbit, forKey: "orbit")
+        
         
     }
     func pauseProgress () {
@@ -112,5 +117,10 @@ class CircularProgress: UIView {
     func resumeProgress () {
         resumeLayer(layer: progressCircle)
     }
+    
+    func removeProgress () {
+        removeLayer(layer: progressCircle)
+    }
+        
     
 }
