@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-
+    
     @IBOutlet weak var textLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var timerLabel: UILabel!
@@ -20,8 +20,8 @@ class ViewController: UIViewController {
     var timeLeft = 0
     var isWorkTime = true
     var sceneColor = UIColor.brown
-    let workText = "Делу время..."
-    let restText = "а потехе 5 минут)))"
+    let workText = "Делу 25 минут..."
+    let restText = "...а потехе 5 минут)))"
     
     func changeSceneColor (color: UIColor) {
         circularProgress.trackColor = color
@@ -51,45 +51,30 @@ class ViewController: UIViewController {
         circularProgress.center = self.view.center
         self.view.addSubview(circularProgress)
         
-        textLabel.text = workText
         pauseButton.isHidden = true
         playButton.isHidden = false
         playButton.setImage(UIImage(systemName: "play", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40)), for: .normal)
         pauseButton.setImage(UIImage(systemName: "pause", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40)), for: .normal)
         
         timerLabel.text = "\(timeConverter(time: timeLeft))"
+        textLabel.text = workText
     }
-
+    
     @objc func animateProgress() {
-           let cp = self.view.viewWithTag(101) as! CircularProgress
-           cp.setProgressWithAnimation(duration: Double(timeLeft))
-       }
-    
-    @objc func pauseAnimateProgress() {
-           let cp = self.view.viewWithTag(101) as! CircularProgress
-           cp.pauseProgress()
-       }
-    
-    @objc func resumeAnimateProgress() {
-           let cp = self.view.viewWithTag(101) as! CircularProgress
-           cp.resumeProgress()
-       }
-    
-    @objc func removeAnimateProgress() {
-           let cp = self.view.viewWithTag(101) as! CircularProgress
-           cp.removeProgress()
-       }
+        let cp = self.view.viewWithTag(101) as! CircularProgress
+        cp.setProgressWithAnimation(duration: Double(timeLeft))
+    }
     
     override func didReceiveMemoryWarning() {
-            super.didReceiveMemoryWarning()
-            // Dispose of any resources that can be recreated.
-        }
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
     
     @objc func onTimerFires() {
         
         timeLeft -= 1
         timerLabel.text = "\(timeConverter(time: timeLeft))"
-     
+        
         if (timeLeft <= 0) && isWorkTime {
             sceneColor = UIColor.green
             changeSceneColor(color: sceneColor)
@@ -109,14 +94,13 @@ class ViewController: UIViewController {
         }
     }
     
-
     @IBAction func playButtonPressed(_ sender: Any) {
         timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
         switch timeLeft {
         case 500, 2500, 150000, 30000:
             self.perform(#selector(animateProgress), with: nil, afterDelay: 0)
         default:
-            resumeAnimateProgress()
+            circularProgress.resumeProgress()
         }
         pauseButton.isHidden = false
         playButton.isHidden = true
@@ -124,30 +108,16 @@ class ViewController: UIViewController {
     
     @IBAction func pauseButtonPressed(_ sender: Any) {
         timer?.invalidate()
-        pauseAnimateProgress()
+        circularProgress.pauseProgress()
         pauseButton.isHidden = true
         playButton.isHidden = false
-        
     }
     
     @IBAction func resetButtonPressed(_ sender: Any) {
         timer?.invalidate()
-        resumeAnimateProgress()
-        removeAnimateProgress()
-        timeLeft = 2500
-        isWorkTime = true
-        sceneColor = UIColor.brown
-        changeSceneColor(color: sceneColor)
-//        circularProgress.removeProgress()
-//        circularProgress.pauseLayer(layer:)
-        timerLabel.text = "\(timeConverter(time: timeLeft))"
-        pauseButton.isHidden = true
-        playButton.isHidden = false
-        textLabel.text = workText
-//        circularProgress.removeFromSuperview()
-//        self.view.addSubview(circularProgress)
-        
-        
+        circularProgress.resumeProgress()
+        circularProgress.removeProgress()
+        viewDidLoad()
     }
 }
 
