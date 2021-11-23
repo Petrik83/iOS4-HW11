@@ -27,6 +27,13 @@ class ViewController: UIViewController {
         timerLabel.textColor = color
     }
     
+    func timeConverter (time: Int) -> String {
+        let timeWithoutMilisec = time / 100
+        let minutes = Int(timeWithoutMilisec) / 60 % 60
+        let seconds = Int(timeWithoutMilisec) % 60
+        return String(format:"%02i:%02i", minutes, seconds)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
