@@ -9,70 +9,115 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    @IBOutlet weak var button: UIButton!
+    
+    @IBOutlet weak var textLabel: UILabel!
+    @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var pauseButton: UIButton!
     
     let circularProgress = CircularProgress(frame: CGRect(x: 10.0, y: 30.0, width: 100.0, height: 100.0))
     var timer: Timer?
-    var timeLeft = 10
-   
+    var timeLeft = 0
+    var isWorkTime = true
+    var sceneColor = UIColor.brown
+    let workText = "Делу 25 минут..."
+    let restText = "...а потехе 5 минут)))"
     
+    func changeSceneColor (color: UIColor) {
+        circularProgress.trackColor = color
+        (color == UIColor.brown) ? (circularProgress.progressColor = UIColor.green) : (circularProgress.progressColor = UIColor.brown)
+        playButton.tintColor = color
+        pauseButton.tintColor = color
+        timerLabel.textColor = color
+        textLabel.textColor = color
+    }
     
+    func timeConverter (time: Int) -> String {
+        let timeWithoutMilisec = time / 100
+        let minutes = Int(timeWithoutMilisec) / 60 % 60
+        let seconds = Int(timeWithoutMilisec) % 60
+        return String(format:"%02i:%02i", minutes, seconds)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        timeLeft = 2500
+        isWorkTime = true
         
-        circularProgress.trackColor = UIColor.green
+        sceneColor = UIColor.brown
+        changeSceneColor(color: sceneColor)
         circularProgress.tag = 101
         circularProgress.center = self.view.center
         self.view.addSubview(circularProgress)
         
-        button.setImage(UIImage(systemName: "play", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40)), for: .normal)
-        button.tintColor = UIColor.green
+        pauseButton.isHidden = true
+        playButton.isHidden = false
+        playButton.setImage(UIImage(systemName: "play", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40)), for: .normal)
+        pauseButton.setImage(UIImage(systemName: "pause", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40)), for: .normal)
         
-        timerLabel.textColor = UIColor.green
         timerLabel.text = "\(timeConverter(time: timeLeft))"
-        
-        
+        textLabel.text = workText
     }
-
+    
     @objc func animateProgress() {
-           let cp = self.view.viewWithTag(101) as! CircularProgress
-           cp.setProgressWithAnimation(duration: Double(timeLeft))
-       }
+        let cp = self.view.viewWithTag(101) as! CircularProgress
+        cp.setProgressWithAnimation(duration: Double(timeLeft))
+    }
     
     override func didReceiveMemoryWarning() {
-            super.didReceiveMemoryWarning()
-            // Dispose of any resources that can be recreated.
-        }
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
     
     @objc func onTimerFires() {
+        
         timeLeft -= 1
         timerLabel.text = "\(timeConverter(time: timeLeft))"
-     
-        if timeLeft <= 0 {
-            timer?.invalidate()
-            timer = nil
+        
+        if (timeLeft <= 0) && isWorkTime {
+            sceneColor = UIColor.green
+            changeSceneColor(color: sceneColor)
+            timeLeft = 500
+            textLabel.text = restText
+            self.perform(#selector(animateProgress), with: nil, afterDelay: 0)
+            isWorkTime = false
+        } else {
+            if (timeLeft <= 0) && !isWorkTime {
+                sceneColor = UIColor.brown
+                changeSceneColor(color: sceneColor)
+                timeLeft = 2500
+                textLabel.text = workText
+                self.perform(#selector(animateProgress), with: nil, afterDelay: 0)
+                isWorkTime = true
+            }
         }
     }
     
     @IBAction func playButtonPressed(_ sender: Any) {
-            
-//                circularProgress.trackColor = UIColor.yellow
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
-
-        
-                //animate progress
-                self.perform(#selector(animateProgress), with: nil, afterDelay: 0)
-        
-        
-        
+        timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
+        switch timeLeft {
+        case 500, 2500, 150000, 30000:
+            self.perform(#selector(animateProgress), with: nil, afterDelay: 0)
+        default:
+            circularProgress.resumeProgress()
+        }
+        pauseButton.isHidden = false
+        playButton.isHidden = true
     }
     
     @IBAction func pauseButtonPressed(_ sender: Any) {
+        timer?.invalidate()
+        circularProgress.pauseProgress()
+        pauseButton.isHidden = true
+        playButton.isHidden = false
     }
     
+    @IBAction func resetButtonPressed(_ sender: Any) {
+        timer?.invalidate()
+        circularProgress.resumeProgress()
+        circularProgress.removeProgress()
+        viewDidLoad()
+    }
 }
 
