@@ -10,6 +10,7 @@ import UIKit
 class ViewController: UIViewController {
     
 
+    @IBOutlet weak var textLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var pauseButton: UIButton!
@@ -19,12 +20,16 @@ class ViewController: UIViewController {
     var timeLeft = 0
     var isWorkTime = true
     var sceneColor = UIColor.brown
+    let workText = "Делу время..."
+    let restText = "а потехе 5 минут)))"
     
     func changeSceneColor (color: UIColor) {
         circularProgress.trackColor = color
+        (color == UIColor.brown) ? (circularProgress.progressColor = UIColor.green) : (circularProgress.progressColor = UIColor.brown)
         playButton.tintColor = color
         pauseButton.tintColor = color
         timerLabel.textColor = color
+        textLabel.textColor = color
     }
     
     func timeConverter (time: Int) -> String {
@@ -39,15 +44,19 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         timeLeft = 2500
         isWorkTime = true
+        
         sceneColor = UIColor.brown
         changeSceneColor(color: sceneColor)
         circularProgress.tag = 101
         circularProgress.center = self.view.center
         self.view.addSubview(circularProgress)
+        
+        textLabel.text = workText
         pauseButton.isHidden = true
         playButton.isHidden = false
         playButton.setImage(UIImage(systemName: "play", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40)), for: .normal)
         pauseButton.setImage(UIImage(systemName: "pause", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40)), for: .normal)
+        
         timerLabel.text = "\(timeConverter(time: timeLeft))"
     }
 
@@ -85,6 +94,7 @@ class ViewController: UIViewController {
             sceneColor = UIColor.green
             changeSceneColor(color: sceneColor)
             timeLeft = 500
+            textLabel.text = restText
             self.perform(#selector(animateProgress), with: nil, afterDelay: 0)
             isWorkTime = false
         } else {
@@ -92,6 +102,7 @@ class ViewController: UIViewController {
                 sceneColor = UIColor.brown
                 changeSceneColor(color: sceneColor)
                 timeLeft = 2500
+                textLabel.text = workText
                 self.perform(#selector(animateProgress), with: nil, afterDelay: 0)
                 isWorkTime = true
             }
@@ -123,7 +134,20 @@ class ViewController: UIViewController {
         timer?.invalidate()
         resumeAnimateProgress()
         removeAnimateProgress()
-        viewDidLoad()
+        timeLeft = 2500
+        isWorkTime = true
+        sceneColor = UIColor.brown
+        changeSceneColor(color: sceneColor)
+//        circularProgress.removeProgress()
+//        circularProgress.pauseLayer(layer:)
+        timerLabel.text = "\(timeConverter(time: timeLeft))"
+        pauseButton.isHidden = true
+        playButton.isHidden = false
+        textLabel.text = workText
+//        circularProgress.removeFromSuperview()
+//        self.view.addSubview(circularProgress)
+        
+        
     }
 }
 

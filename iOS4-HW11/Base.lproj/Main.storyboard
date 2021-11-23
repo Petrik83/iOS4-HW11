@@ -49,6 +49,13 @@
                                     <action selector="resetButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LMI-mZ-6W9"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S5g-P8-64f">
+                                <rect key="frame" x="87" y="268" width="216" height="27"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -56,6 +63,7 @@
                     <connections>
                         <outlet property="pauseButton" destination="eew-rh-8xS" id="Iu8-pO-Pf5"/>
                         <outlet property="playButton" destination="rzl-dJ-IK3" id="QqD-AN-wYY"/>
+                        <outlet property="textLabel" destination="S5g-P8-64f" id="kaW-od-3OF"/>
                         <outlet property="timerLabel" destination="pNC-45-B8h" id="4CX-NG-m9A"/>
                     </connections>
                 </viewController>

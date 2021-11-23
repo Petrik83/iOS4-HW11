@@ -10,7 +10,7 @@ import UIKit
 class CircularProgress: UIView {
     
     fileprivate var progressLayer = CAShapeLayer()
-    fileprivate var tracklayer = CAShapeLayer()
+    fileprivate var trackLayer = CAShapeLayer()
     fileprivate var progressCircle = CAShapeLayer()
     /*
      // Only override draw() if you perform custom drawing.
@@ -30,16 +30,17 @@ class CircularProgress: UIView {
         createCircularPath()
     }
     
-    var progressColor: UIColor = UIColor.green {
+    var trackColor: UIColor = UIColor.brown {
         didSet {
-            progressLayer.strokeColor = progressColor.cgColor
+            trackLayer.strokeColor = trackColor.cgColor
+            progressCircle.strokeColor = trackColor.cgColor
         }
     }
     
-    var trackColor: UIColor = UIColor.green {
+    var progressColor: UIColor = UIColor.green {
+        
         didSet {
-            tracklayer.strokeColor = trackColor.cgColor
-            progressCircle.strokeColor = trackColor.cgColor
+            progressLayer.strokeColor = progressColor.cgColor
         }
     }
     
@@ -48,7 +49,7 @@ class CircularProgress: UIView {
         layer.speed = 0.0
         layer.timeOffset = pausedTime
     }
-
+    
     fileprivate func resumeLayer(layer: CALayer) {
         let pausedTime = layer.timeOffset
         layer.speed = 1.0
@@ -60,6 +61,7 @@ class CircularProgress: UIView {
     
     fileprivate func removeLayer(layer: CALayer) {
         layer.removeAllAnimations()
+        progressLayer.strokeEnd = 0
     }
     
     fileprivate func createCircularPath() {
@@ -69,12 +71,21 @@ class CircularProgress: UIView {
                                       radius: CGFloat(100), startAngle: CGFloat(-0.5 * Double.pi),
                                       endAngle: CGFloat(1.5 * Double.pi), clockwise: true)
         
-        tracklayer.path = circlePath.cgPath
-        tracklayer.fillColor = UIColor.clear.cgColor
-        tracklayer.strokeColor = trackColor.cgColor
-        tracklayer.lineWidth = 3.0;
-        tracklayer.strokeEnd = 1.0
-        layer.addSublayer(tracklayer)
+        trackLayer.path = circlePath.cgPath
+        trackLayer.fillColor = UIColor.clear.cgColor
+        
+        
+        trackLayer.strokeColor = trackColor.cgColor
+        trackLayer.lineWidth = 3.0;
+        trackLayer.strokeEnd = 1.0
+        layer.addSublayer(trackLayer)
+        
+        progressLayer.path = circlePath.cgPath
+        progressLayer.fillColor = UIColor.clear.cgColor
+        progressLayer.strokeColor = UIColor.brown.cgColor
+        progressLayer.lineWidth = 3.0;
+        progressLayer.strokeEnd = 0.0
+        layer.addSublayer(progressLayer)
         
         let smallCirclePath = UIBezierPath(arcCenter: CGPoint(x: frame.size.width / 2.0, y: (frame.size.height / 2.0) - 100), radius: CGFloat(10), startAngle: CGFloat(-0.5 * Double.pi),
                                            endAngle: CGFloat(1.5 * Double.pi), clockwise: true)
@@ -108,19 +119,36 @@ class CircularProgress: UIView {
         orbit.rotationMode = CAAnimationRotationMode.rotateAuto
         progressCircle.add(orbit, forKey: "orbit")
         
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.duration = duration
+        // Animate from 0 (no circle) to 1 (full circle)
+        animation.fromValue = 0
+        animation.toValue = 1
+        animation.speed = 100
+        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
+        animation.repeatCount = 1
+        animation.isRemovedOnCompletion = true
+        progressLayer.strokeEnd = CGFloat(1)
+        progressLayer.add(animation, forKey: "animateCircle")
+        
         
     }
     func pauseProgress () {
         pauseLayer(layer: progressCircle)
+        pauseLayer(layer: progressLayer)
     }
     
     func resumeProgress () {
         resumeLayer(layer: progressCircle)
+        resumeLayer(layer: progressLayer)
     }
     
     func removeProgress () {
-        removeLayer(layer: progressCircle)
-    }
         
+        removeLayer(layer: progressCircle)
+        removeLayer(layer: progressLayer)
+        
+    }
+    
     
 }
